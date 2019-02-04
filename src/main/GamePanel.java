@@ -21,12 +21,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font titleFont;
 	Font instructionsFont;
 	Rocketship rocket;
+	ObjectManager om;
 
 	public GamePanel() {
 		t = new Timer(50 / 3, this);
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		instructionsFont = new Font("Arial", Font.PLAIN, 25);
-		rocket = new Rocketship(250,700,50,50);
+		rocket = new Rocketship(250, 700, 50, 50);
+		om = new ObjectManager(rocket);
 	}
 
 	void startGame() {
@@ -39,6 +41,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			drawMenuState(g);
 		} else if (currentState == GAME_STATE) {
 			drawGameState(g);
+			rocket.draw(g);
 		} else if (currentState == END_STATE) {
 			drawEndState(g);
 		}
@@ -59,26 +62,51 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("key");
 
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
-		if (e.getKeyCode() == 10) {
-			System.out.println("worked");
+		int keyCode = e.getKeyCode();
+		System.out.println(keyCode);
+		if (keyCode == 10) {
 			currentState++;
 			if (currentState > END_STATE) {
 				currentState = MENU_STATE;
 			}
+		} else if (keyCode == 32) {
+			om.addProjectile(new Projectiles(rocket.x + 20, rocket.y, 10, 10));
+		} else if (keyCode == 37) {
+			// left
+			rocket.setLeft(true);
+		} else if (keyCode == 38) {
+			// up
+			rocket.setUp(true);
+		} else if (keyCode == 39) {
+			// right
+			rocket.setRight(true);
+		} else if (keyCode == 40) {
+			// down
+			rocket.setDown(true);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("key");
+		int keyCode = e.getKeyCode();
+		if (keyCode == 37) {
+			// left
+			rocket.setLeft(false);
+		} else if (keyCode == 38) {
+			// up
+			rocket.setUp(false);
+		} else if (keyCode == 39) {
+			// right
+			rocket.setRight(false);
+		} else if (keyCode == 40) {
+			// down
+			rocket.setDown(false);
+		}
 	}
 
 	void updateMenuState() {
@@ -86,7 +114,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateGameState() {
-		rocket.update();
+		om.update();
 	}
 
 	void updateEndState() {
@@ -107,7 +135,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-		rocket.draw(g);
+		om.draw(g);
 	}
 
 	void drawEndState(Graphics g) {
