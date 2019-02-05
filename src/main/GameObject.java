@@ -1,11 +1,13 @@
 package main;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class GameObject {
 
 	int x, y, width, height;
 	boolean isAlive;
+	Rectangle collisionBox;
 
 	public GameObject(int x, int y, int width, int height) {
 		this.x = x;
@@ -13,10 +15,11 @@ public class GameObject {
 		this.width = width;
 		this.height = height;
 		isAlive = true;
+		collisionBox = new Rectangle(x,y,width,height);
 	}
 
 	void update() {
-
+		collisionBox.setBounds(x,y,width,height);
 	}
 
 	void draw(Graphics g) {

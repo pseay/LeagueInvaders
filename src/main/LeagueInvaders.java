@@ -20,7 +20,7 @@ public class LeagueInvaders {
 		LeagueInvaders game = new LeagueInvaders();
 		game.setup();
 	}
-
+	
 	void setup() {
 		jf.add(gp);
 		jf.addKeyListener(gp);

@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
 	int currentState = MENU_STATE;
+	int endScore;
 	Font titleFont;
 	Font instructionsFont;
 	Rocketship rocket;
@@ -74,6 +75,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (currentState > END_STATE) {
 				currentState = MENU_STATE;
 			}
+			if (currentState == END_STATE)
+			{
+				rocket = new Rocketship(250, 700, 50, 50);
+				endScore = om.getScore();
+				om = new ObjectManager(rocket);
+			}
 		} else if (keyCode == 32) {
 			om.addProjectile(new Projectiles(rocket.x + 20, rocket.y, 10, 10));
 		} else if (keyCode == 37) {
@@ -115,6 +122,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void updateGameState() {
 		om.update();
+		om.manageEnemies();
+		om.checkCollision();
+		om.purgeObjects();
+		if (om.rocket.isAlive == false)
+		{
+			endScore = om.getScore();
+			currentState = END_STATE;
+		}
 	}
 
 	void updateEndState() {
@@ -145,7 +160,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.BLACK);
 		g.drawString("Game Over", 100, 200);
 		g.setFont(instructionsFont);
-		g.drawString("You killed VALUE enemies", 125, 350);
+		g.drawString("You killed " + endScore + " enemies", 125, 350);
 		g.drawString("Press ENTER to restart", 100, 500);
 	}
 }
