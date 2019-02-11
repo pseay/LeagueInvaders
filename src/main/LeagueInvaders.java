@@ -8,8 +8,8 @@ public class LeagueInvaders {
 
 	JFrame jf;
 	GamePanel gp;
-	final static int WIDTH = 500;
-	final static int HEIGHT = 800;
+	final public static int WIDTH = 500;
+	final public static int HEIGHT = 800;
 
 	public LeagueInvaders() {
 		jf = new JFrame();
@@ -20,7 +20,7 @@ public class LeagueInvaders {
 		LeagueInvaders game = new LeagueInvaders();
 		game.setup();
 	}
-	
+
 	void setup() {
 		jf.add(gp);
 		jf.addKeyListener(gp);
